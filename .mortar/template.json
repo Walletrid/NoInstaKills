@@ -1,0 +1,21 @@
+{
+  "template": "Rethunk-Tech/mortar-bepinex5-template",
+  "ref": "v0.2.2",
+  "name": "NoInstaKills",
+  "values": {
+    "assets": "false",
+    "audience": "everyone",
+    "categories": "bepinex|tweaks-and-quality-of-life|misc",
+    "config": "true",
+    "configSync": "false",
+    "description": "Survive instakill attacks if you have 100+ health!",
+    "idPrefix": "com.wallet",
+    "loaderPackVersion": "5.4.2305",
+    "modAuthor": "Wallet",
+    "netcode": "false",
+    "repositoryUrl": "https://github.com/Walletrid/NoInstaKills",
+    "team": "Wallet"
+  },
+  "game": "lethal-company",
+  "templateIcon": "983d4b2b4b9d25da1f4d005ebd711cbe6cf3c3273fff34283a1ec32222efdc0a"
+}
