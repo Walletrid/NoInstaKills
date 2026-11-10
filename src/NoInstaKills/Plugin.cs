@@ -1,6 +1,7 @@
 using BepInEx;
 using BepInEx.Configuration;
 using BepInEx.Logging;
+using HarmonyLib;
 
 namespace NoInstaKills;
 
@@ -24,6 +25,10 @@ public class Plugin : BaseUnityPlugin
             Log.LogInfo($"{MyPluginInfo.Name} is turned off in its config");
             return;
         }
+
+        var harm = new Harmony(MyPluginInfo.Id);
+        harm.PatchAll();
+
         Log.LogInfo($"{MyPluginInfo.Name} {MyPluginInfo.Version} loaded");
     }
 }
