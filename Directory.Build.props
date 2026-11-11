@@ -15,7 +15,7 @@
     <EnableNETAnalyzers>true</EnableNETAnalyzers>
     <AnalysisMode>recommended</AnalysisMode>
     <UseArtifactsOutput>true</UseArtifactsOutput>
-    <Version>0.1.0</Version>
+    <Version>1.0.0</Version>
     <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>embedded</DebugType>

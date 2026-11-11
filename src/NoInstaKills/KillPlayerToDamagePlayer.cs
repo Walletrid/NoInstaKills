@@ -1,11 +1,14 @@
-﻿using System.Collections.Generic;
-using HarmonyLib;
+﻿using HarmonyLib;
 
 namespace NoInstaKills;
 
 public class KillPlayerToDamagePlayer
 {
     public static string? DamageCause;
+
+    //public static AudioSource? MaskBreakSFX;
+
+    //AudioClip defaultClip = (Unity) WalletMods.Load<AudioClip>("beep");
 
     [HarmonyPatch(typeof(GameNetcodeStuff.PlayerControllerB), "KillPlayer", new[] { typeof(UnityEngine.Vector3), typeof(bool), typeof(CauseOfDeath), typeof(int), typeof(UnityEngine.Vector3), typeof(bool) })]
     internal static class PlayerControllerBKillPlayerPatch
@@ -31,7 +34,7 @@ public class KillPlayerToDamagePlayer
         }
     }
 
-    //Bonus patches to fix bugs
+    //Bonus patches to fix bugs ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
     //KillPlanes to always insta-kill
     [HarmonyPatch(typeof(KillLocalPlayer), "KillPlayer", new[] { typeof(GameNetcodeStuff.PlayerControllerB) })]
@@ -45,12 +48,24 @@ public class KillPlayerToDamagePlayer
         }
     }
 
+    //Maneaters to be able to kill you on second attack
+    [HarmonyPatch(typeof(CaveDwellerAI), "FinishKillAnimation")]
+    internal static class CaveDwellerAIFinishKillAnimationPatch
+    {
+        [HarmonyPostfix]
+        private static void Postfix(CaveDwellerAI __instance)
+        {
+            __instance.startingKillAnimationLocalClient = false; // This variable stops the Maneater from killing you
+            Plugin.Log.LogDebug("Fixed Maneater from not killing the player");
+        }
+    }
+
     //HauntedMaskItems to not spawn new maskeds
     [HarmonyPatch(typeof(HauntedMaskItem), "FinishAttaching")]
     internal static class HauntedMaskItemFinishAttachingPatch
     {
         [HarmonyPostfix]
-        private static void Prefix(HauntedMaskItem __instance)
+        private static void Postfix(HauntedMaskItem __instance)
         {
             DamageCause = "MaskItem";
         }
@@ -62,10 +77,11 @@ public class KillPlayerToDamagePlayer
         [HarmonyPrefix]
         private static bool Prefix(HauntedMaskItem __instance, bool inFactory, UnityEngine.Vector3 playerPositionAtDeath)
         {
-            if (DamageCause == "MaskItem")
+            if (DamageCause == "MaskItem" && !__instance.previousPlayerHeldBy.isPlayerDead)
             {
                Plugin.Log.LogDebug("Stopping spawning of a Masked from using a Mask Item and surviving");
                __instance.CancelAttachToPlayerOnLocalClient();
+               //HUDManager.Instance.UIAudio.PlayOneShot(MaskBreakSFX, 1f);
                return false;
             }
 
@@ -101,8 +117,7 @@ public class KillPlayerToDamagePlayer
         {
             if (DamageCause == "MaskEnemy")
             {
-                Plugin.Log.LogDebug(
-                    "Stopping spawning of a Masked from being infected by another masked and surviving");
+                Plugin.Log.LogDebug("Stopping spawning of a Masked from being infected by another masked and surviving");
                 return false;
             }
 

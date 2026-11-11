@@ -27,5 +27,7 @@
     <ThunderstoreDependency Include="BepInEx-BepInExPack" Version="5.4.2305" />
     <ThunderstoreSoftDependency Include="AinaVT-LethalConfig" Version="1.4.6" />
     <Reference Include="$(MortarDependency_AinaVT_LethalConfig)**/*.dll" Condition="'$(MortarDependency_AinaVT_LethalConfig)' != ''" Private="false" />
+    <ThunderstoreDependency Include="Mortar-ConfigSync" Version="0.1.1" />
+    <Reference Include="$(MortarDependency_Mortar_ConfigSync)**/*.dll" Condition="'$(MortarDependency_Mortar_ConfigSync)' != ''" Private="false" />
   </ItemGroup>
 </Project>
